@@ -1,0 +1,35 @@
+use-grammars = { only = ["rust", "ruby"] }
+
+[language-server.solargraph]
+config.diagnostics=false
+config.formatting=false
+command = "/Users/artolevi/.local/share/mise/installs/ruby/3.3.0/bin/solargraph"
+args = ["stdio"]
+
+[language-server.rubocop]
+command = "/Users/artolevi/.local/share/mise/installs/ruby/3.3.0/bin/rubocop"
+args = ["--lsp", "--stderr", "--fail-level", "fatal"]
+
+[[language]]
+name = "ruby"
+auto-format = true
+language-servers=["solargraph", "rubocop"]
+
+[language.debugger]
+command = "rdbg"
+args =["-o", "-c"]
+name = "debug"
+transport = "tcp"
+port-arg = "-p {}"
+
+[[language.debugger.templates]]
+name = "launch"
+request = "launch"
+completion = [ { name = "entrypoint", completion = "filename", default = "bundle exec rspec" } ]
+args = { program = "{0}" }
+
+[[language.debugger.templates]]
+name = "attach"
+request = "attach"
+completion = [ "pid" ]
+args = { attachCommands = ["rdbg --attach 1234"] }
